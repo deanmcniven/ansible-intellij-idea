@@ -1,4 +1,5 @@
 ---
-- name: set-user-facts
-  src: https://github.com/deanmcniven/ansible-set-user-facts.git
-  version: origin/master
+dependencies:
+  - name: set-user-facts
+    src: https://github.com/deanmcniven/ansible-set-user-facts.git
+    version: origin/master
