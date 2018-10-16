@@ -1,6 +1,6 @@
 ---
-- debug: msg="User Details Defined: {{local_user_details_defined}}"
-- debug: msg="Username: {{local_user_username}}"
-- debug: msg="User Full Name: {{local_user_fullname}}"
-# - debug: msg="User Email: {{local_user_email}}"
-- debug: msg="User Home: {{local_user_homedir}}"
+- debug: msg="User Details Defined -> {{local_user_details_defined}}"
+- debug: msg="Username -> {{local_user_username}}"
+- debug: msg="User Full Name -> {{local_user_fullname}}"
+# - debug: msg="User Email -> {{local_user_email}}"
+- debug: msg="User Home -> {{local_user_homedir}}"
