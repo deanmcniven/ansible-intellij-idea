@@ -1,0 +1,39 @@
+---
+
+- name: Old Unpacked Installation Identifier
+  become: true
+  find:
+    paths: /opt/jetbrains
+    pattern: "idea-I[CU]-\\d+\\.\\d+\\.\\d+$"
+    recurse: no
+    file_type: directory
+    use_regex: yes
+    excludes: "{{ intellij_extracted_folder }}"
+  register: intellij_old_unpacked_installations
+
+- name: Old Installer Identifier
+  become: true
+  find:
+    paths: /opt/jetbrains
+    pattern: "ideaI[CU]-\\d+\\.\\d+\\.\\d+\\.tar\\.gz$"
+    recurse: no
+    file_type: file
+    use_regex: yes
+    excludes: "{{ intellij_tarball_name }}"
+  register: intellij_old_installers
+
+- name: Delete Old Installations
+  become: true
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  with_items: "{{ intellij_old_unpacked_installations.files }}"
+  when: intellij_old_unpacked_installations.matched != 0
+
+- name: Delete Old Installers
+  become: true
+  file:
+    path: "{{item.path}}"
+    state: absent
+  with_items: "{{ intellij_old_installers.files }}"
+  when: intellij_old_installers != 0
