@@ -9,16 +9,11 @@
 
 - name: Register Facts
   become: false
-  vars:
-    query_major_version: "{{ intellij_idea_type }}.0.majorVersion"
-    query_version: "{{ intellij_idea_type }}.0.version"
-    query_build: "{{ intellij_idea_type }}.0.build"
-    query_url: "{{ intellij_idea_type }}.0.downloads.linux.link"
   set_fact:
-    intellij_major_version: "{{ release_info.json | json_query(query_major_version) }}"
-    intellij_version: "{{ release_info.json | json_query(query_version) }}"
-    intellij_build: "{{ release_info.json | json_query(query_build) }}"
-    intellij_download_url: "{{ release_info.json | json_query(query_url) }}"
+    intellij_major_version: "{{ release_info.json[intellij_idea_type].0.majorVersion }}"
+    intellij_version: "{{ release_info.json[intellij_idea_type].0.version }}"
+    intellij_build: "{{ release_info.json[intellij_idea_type].0.build }}"
+    intellij_download_url: "{{ release_info.json[intellij_idea_type].0.downloads.linux.link }}"
   changed_when: false
 
 - name: Register Tarball Name as Fact
