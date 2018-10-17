@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=IntelliJ IDEA Ultimate Edition
+Icon={{ idea_installation_directory }}/bin/idea.png
+Exec="{{ idea_installation_directory }}/bin/idea.sh" %f
+Comment=Capable and Ergonomic IDE for JVM
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=jetbrains-idea
+{% if idea_only_show_option %}OnlyShowIn=Old;{% endif %}

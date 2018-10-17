@@ -1,4 +1,19 @@
 ---
+- name: Set Idea type to Community
+  become: false
+  when: intellij_license is not defined
+  set_fact:
+    intellij_idea_type: IIC
+    intellij_idea_type_short: IC
+  changed_when: false
+- name: Set Idea type to Ultimate
+  become: false
+  when: intellij_license is defined
+  set_fact:
+    intellij_idea_type: IIU
+    intellij_idea_type_short: IU
+  changed_when: false
+
 - name: Get release info
   become: false
   uri:
@@ -20,4 +35,10 @@
   become: false
   set_fact:
     intellij_tarball_name: "{{ intellij_download_url | basename }}"
+  changed_when: false
+
+- name: Set extracted folder name
+  become: false
+  set_fact:
+    intellij_extracted_folder: "idea-{{ intellij_idea_type_short }}-{{ intellij_build }}"
   changed_when: false

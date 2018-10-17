@@ -1,0 +1,48 @@
+---
+
+- name: Create Jetbrains Directory
+  become: true
+  file:
+    path: /opt/jetbrains
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+- name: Download idea
+  become: true
+  get_url:
+    url: "{{ intellij_download_url }}"
+    dest: /opt/jetbrains/{{ intellij_tarball_name }}
+    mode: 0644
+- name: Install idea
+  become: true
+  unarchive:
+    src: /opt/jetbrains/{{ intellij_tarball_name }}
+    dest: /opt/jetbrains/
+- name: Create idea bash alias
+  become: false
+  lineinfile:
+    path: "{{ local_user_homedir }}/.bash_aliases"
+    regexp: '^alias idea=.*$'
+    line: "alias idea='nohup /opt/jetbrains/{{ intellij_extracted_folder }}/bin/idea.sh `realpath .`/ > /dev/null 2>&1 & disown'"
+    state: present
+    create: yes
+- name: Create gnome desktop entry
+  become: false
+  vars:
+    idea_installation_directory: /opt/jetbrains/{{ intellij_extracted_folder }}
+    idea_only_show_option: true
+  template:
+    src: jetbrains-idea-desktop.j2
+    dest: "{{ local_user_homedir }}/.gnome/apps/jetbrains-idea.desktop"
+    mode: 0644
+- name: Create local desktop entry
+  become: false
+  vars:
+    idea_installation_directory: /opt/jetbrains/{{ intellij_extracted_folder }}
+    idea_only_show_option: false
+  template:
+    src: jetbrains-idea-desktop.j2
+    dest: "{{ local_user_homedir }}/.local/share/applications/jetbrains-idea.desktop"
+    mode: 0644
+
