@@ -1,0 +1,28 @@
+---
+- name: Get release info
+  become: false
+  uri:
+    url: "https://data.services.jetbrains.com/products/releases?code={{ intellij_idea_type }}&latest=true&type=release"
+    return_content: yes
+  register: release_info
+  changed_when: false
+
+- name: Register Facts
+  become: false
+  vars:
+    query_major_version: "{{ intellij_idea_type }}.0.majorVersion"
+    query_version: "{{ intellij_idea_type }}.0.version"
+    query_build: "{{ intellij_idea_type }}.0.build"
+    query_url: "{{ intellij_idea_type }}.0.downloads.linux.link"
+  set_fact:
+    intellij_major_version: "{{ release_info.json | json_query(query_major_version) }}"
+    intellij_version: "{{ release_info.json | json_query(query_version) }}"
+    intellij_build: "{{ release_info.json | json_query(query_build) }}"
+    intellij_download_url: "{{ release_info.json | json_query(query_url) }}"
+  changed_when: false
+
+- name: Register Tarball Name as Fact
+  become: false
+  set_fact:
+    intellij_tarball_name: "{{ intellij_download_url | basename }}"
+  changed_when: false

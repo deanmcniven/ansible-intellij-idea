@@ -1,0 +1,7 @@
+---
+
+- debug: msg="{{ intellij_major_version }}"
+- debug: msg="{{ intellij_version }}"
+- debug: msg="{{ intellij_build }}"
+- debug: msg="{{ intellij_download_url }}"
+- debug: msg="{{ intellij_tarball_name }}"
