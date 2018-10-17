@@ -1,0 +1,37 @@
+---
+
+# Create config dir only if it doesnt already exist
+# upgraded Idea will offer to import earlier configs on first start
+- name: Configuration Identifier
+  become: false
+  find:
+    paths: "{{ local_user_homedir }}"
+    pattern: "\\.IntelliJIdea\\d+\\.\\d+$"
+    recurse: no
+    file_type: directory
+    hidden: yes
+    use_regex: yes
+  register: intellij_config_search_results
+
+- name: Create config directory
+  become: false
+  file:
+    path: "{{ local_user_homedir }}/.IntelliJIdea{{ intellij_major_version }}/config/options"
+    state: directory
+    mode: 0755
+  when: intellij_config_search_results.matched == 0
+
+- name: Install config
+  become: false
+  copy:
+    src: files/options/
+    dest: "{{ local_user_homedir }}/.IntelliJIdea{{ intellij_major_version }}/config/options/"
+    mode: 0644
+  when: intellij_config_search_results.matched == 0
+
+- name: Install Idea License
+  become: false
+  when: intellij_license is defined
+  script: files/license-file-generator.py  {{intellij_license}}  {{ local_user_homedir }}/.IntelliJIdea{{ intellij_major_version }}/config/idea.key
+  args:
+    creates: "{{ local_user_homedir }}/.IntelliJIdea{{ intellij_major_version }}/config/idea.key"
