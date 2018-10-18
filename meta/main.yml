@@ -1,4 +1,12 @@
 ---
+galaxy_info:
+  author: Dean McNiven
+  description: ansible-intellij-idea
+  license: MIT
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
 dependencies:
   - name: set-user-facts
     src: https://github.com/deanmcniven/ansible-set-user-facts.git
