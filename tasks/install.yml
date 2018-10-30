@@ -27,6 +27,11 @@
     line: "alias idea='nohup /opt/jetbrains/{{ intellij_extracted_folder }}/bin/idea.sh `realpath .`/ > /dev/null 2>&1 & disown'"
     state: present
     create: yes
+- name: Create Gnome Apps Directory
+  become: false
+  file:
+    path: "{{ local_user_homedir }}/.gnome/apps"
+    state: directory
 - name: Create gnome desktop entry
   become: false
   vars:
