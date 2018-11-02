@@ -35,3 +35,13 @@
   script: files/license-file-generator.py  {{intellij_license}}  {{ local_user_homedir }}/.IntelliJIdea{{ intellij_major_version }}/config/idea.key
   args:
     creates: "{{ local_user_homedir }}/.IntelliJIdea{{ intellij_major_version }}/config/idea.key"
+
+- name: Increase the Inotify Watches limit
+  become: true
+  copy:
+    content: 'fs.inotify.max_user_watches = 524288'
+    dest: /etc/sysctl.d/idea.conf
+    owner: root
+    group: root
+    mode: 0644
+
