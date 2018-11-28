@@ -29,12 +29,17 @@
     mode: 0644
   when: intellij_config_search_results.matched == 0
 
+- name: Licence File Directory Identifier
+  become: true
+  shell: find "{{local_user_homedir | quote}}" -type d -name ".IntelliJIdea*" | sort --version-sort | tail -n 1
+  register: intellij_licence_file_directory
+
 - name: Install Idea License
   become: false
   when: intellij_license is defined
-  script: files/license-file-generator.py  {{intellij_license}}  {{ local_user_homedir }}/.IntelliJIdea{{ intellij_major_version }}/config/idea.key
+  script: files/license-file-generator.py  {{intellij_license}}  {{ intellij_licence_file_directory.stdout }}/config/idea.key
   args:
-    creates: "{{ local_user_homedir }}/.IntelliJIdea{{ intellij_major_version }}/config/idea.key"
+    creates: "{{ intellij_licence_file_directory.stdout }}/config/idea.key"
 
 - name: Increase the Inotify Watches limit
   become: true
