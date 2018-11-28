@@ -33,6 +33,7 @@
   become: true
   shell: find "{{local_user_homedir | quote}}" -type d -name ".IntelliJIdea*" | sort --version-sort | tail -n 1
   register: intellij_licence_file_directory
+  changed_when: false
 
 - name: Install Idea License
   become: false
