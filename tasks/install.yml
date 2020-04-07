@@ -19,6 +19,13 @@
   unarchive:
     src: /opt/jetbrains/{{ intellij_tarball_name }}
     dest: /opt/jetbrains/
+- name: Create symlink for current version
+  become: true
+  file:
+    src: /opt/jetbrains/{{ intellij_extracted_folder }}
+    dest: /opt/jetbrains/idea-current
+    mode: 0755
+    state: link
 - name: Create idea bash alias
   become: false
   lineinfile:
