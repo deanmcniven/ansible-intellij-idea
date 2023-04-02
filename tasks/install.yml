@@ -41,6 +41,11 @@
     src: jetbrains-idea-desktop.j2
     dest: "{{ local_user_homedir }}/.gnome/apps/jetbrains-idea.desktop"
     mode: 0644
+- name: Create desktop entry path
+  become: false
+  file:
+    path: "{{ local_user_homedir }}/.local/share/applications"
+    state: directory
 - name: Create local desktop entry
   become: false
   vars:
